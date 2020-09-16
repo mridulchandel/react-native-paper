@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "765195782640",
+    "firebase_url": "https://reactnativepaper.firebaseio.com",
+    "project_id": "reactnativepaper",
+    "storage_bucket": "reactnativepaper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765195782640:android:8bda9d2d84515de962f535",
+        "android_client_info": {
+          "package_name": "com.reactnativepaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "765195782640-e0vcjmd7hvn33i5hlhlbd9mdq45qkjm3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reactnativepaper",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "765195782640-l25jj0c1ccuu6ilftn3sbhh890ho1amt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTKXh5xM3E_2diBQivaXq95ZNCd7UZZs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "765195782640-l25jj0c1ccuu6ilftn3sbhh890ho1amt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">reactNativePaper</string>
+    <string name="facebook_app_id">1103615846720858</string>
+    <string name="fb_login_protocol_scheme">fb1103615846720858</string>
+</resources>
