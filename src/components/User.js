@@ -14,8 +14,11 @@ import CustomButton from '../common/CustomButton';
 import CustomInput from '../common/CustomInput';
 import {useAppState} from '../contextStore/StateProvider';
 import {updateFirestore} from '../util/user';
+import {useNavigation} from '@react-navigation/native';
 
-const User = ({navigation, route}) => {
+const User = ({route}) => {
+  const navigation = useNavigation();
+
   // Getting userDetail from store
   const [{uid}, dispatch] = useAppState();
 
@@ -165,9 +168,7 @@ const User = ({navigation, route}) => {
       .signOut()
       .then(() => {
         console.log('User signed out!');
-        if (route.navigation) {
-          route.navigation.popToTop();
-        }
+        navigation.popToTop();
       });
   };
 

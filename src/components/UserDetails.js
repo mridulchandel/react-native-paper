@@ -8,6 +8,7 @@ import ThemeWrapper from '../theme/ThemeWrapper';
 import {useAppState} from '../contextStore/StateProvider';
 import {setFirestore} from '../util/user';
 import {getData} from '../util/asyncStorage';
+import useBackButton from '../util/useBackButton';
 
 const initialState = {
   name: '',
@@ -48,6 +49,8 @@ function UserDetails({navigation, route}) {
     {name, nameError, email, emailError, phone, phoneError},
     dispatch,
   ] = useReducer(reducer, initialState);
+
+  useBackButton();
 
   const [{uid}, dispatchAppState] = useAppState();
 
@@ -113,7 +116,7 @@ function UserDetails({navigation, route}) {
 
   return (
     <ThemeWrapper>
-      <Header title="Sign In" />
+      <Header title="User Details" />
       <CustomInput
         label="Name"
         value={name}

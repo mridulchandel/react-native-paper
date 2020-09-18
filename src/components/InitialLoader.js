@@ -22,6 +22,7 @@ function InitialLoader({navigation}) {
           type: 'SET_UID',
           data: user.uid,
         });
+
         getFirestore('Users', user.uid).then((data) => {
           if (isEmpty(data)) {
             const name = user.displayName;
@@ -34,19 +35,13 @@ function InitialLoader({navigation}) {
               phone,
               photoUrl,
             });
-            dispatch({
-              type: 'SET_LOADING_DATA',
-              data: false,
-            });
           } else {
             navigation.navigate('Home');
-            if (!loadingData) {
-              dispatch({
-                type: 'SET_LOADING_DATA',
-                data: true,
-              });
-            }
           }
+          dispatch({
+            type: 'SET_LOADING_DATA',
+            data: false,
+          });
         });
       } else {
         navigation.navigate('SignIn');

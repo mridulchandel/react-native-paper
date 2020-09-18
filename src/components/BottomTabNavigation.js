@@ -1,21 +1,16 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  BottomNavigation,
-  Portal,
-  Text,
-  ActivityIndicator,
-} from 'react-native-paper';
+import React, {useState, useEffect} from 'react';
+import {BottomNavigation, Text} from 'react-native-paper';
 
 import UserRoute from './User.js';
 import ProductRoute from './Products.js';
 import {useAppState} from '../contextStore/StateProvider';
+import useBackButton from '../util/useBackButton';
 
 const RecentsRoute = () => <Text>Recents</Text>;
 
-const BotttomTabNavigation = ({navigation}) => {
+const BotttomTabNavigation = ({}) => {
   const [{}, dispatch] = useAppState();
-
+  useBackButton();
   // For bottom navigator
   const [index, setIndex] = useState(0);
 
@@ -24,7 +19,6 @@ const BotttomTabNavigation = ({navigation}) => {
       key: 'user',
       title: 'User',
       icon: 'account',
-      navigation,
     },
     {key: 'products', title: 'Products', icon: 'album'},
     {key: 'recents', title: 'Recents', icon: 'history'},

@@ -3,7 +3,6 @@ import React, {useState, useCallback} from 'react';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
-// import * as Facebook from "expo-facebook";
 
 import CustomButton from '../common/CustomButton';
 import CustomInput from '../common/CustomInput';
@@ -11,8 +10,10 @@ import ThemeWrapper from '../theme/ThemeWrapper';
 import {storeData} from '../util/asyncStorage';
 import Header from '../common/Header';
 import {useAppState} from '../contextStore/StateProvider';
+import useBackButton from '../util/useBackButton';
 
 function SignIn({navigation}) {
+  useBackButton();
   const [{loadingData}, dispatch] = useAppState();
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
@@ -27,10 +28,10 @@ function SignIn({navigation}) {
   // };
 
   const loading = () => {
-    dispatch({
-      type: 'SET_LOADING_DATA',
-      data: true,
-    });
+    // dispatch({
+    //   type: 'SET_LOADING_DATA',
+    //   data: true,
+    // });
   };
 
   const handleFacebookSignIn = async () => {
