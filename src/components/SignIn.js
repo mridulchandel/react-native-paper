@@ -176,10 +176,15 @@ function SignIn({navigation}) {
       <Header title="Sign In" />
       <ThemeWrapper styling={{justifyContent: 'center'}}>
         <CustomButton
+          icon="facebook"
           text="Log In with Facebook"
           clicked={handleFacebookSignIn}
         />
-        <CustomButton text="Log In with Gmail" clicked={handleGoogleSignIn} />
+        <CustomButton
+          icon="google"
+          text="Log In with Gmail"
+          clicked={handleGoogleSignIn}
+        />
         <CustomInput
           label={phoneConfirm ? 'Confirm code' : 'Mobile No.'}
           value={phoneConfirm ? code : phone}

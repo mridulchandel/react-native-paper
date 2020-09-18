@@ -1,11 +1,26 @@
 import firestore from '@react-native-firebase/firestore';
 
+export const getAllFirestore = (collectionName, uid) => {
+  return firestore()
+    .collection(collectionName)
+    .get()
+    .then((querySnapshot) => {
+      // console.log('Total users: ', querySnapshot.size);
+      const products = [];
+      querySnapshot.forEach((documentSnapshot) => {
+        products.push({id: documentSnapshot.id, ...documentSnapshot.data()});
+      });
+      return products;
+    });
+};
+
 export const getFirestore = (collectionName, uid) => {
   return firestore()
     .collection(collectionName)
     .doc(uid)
     .get()
     .then((documentSnapshot) => {
+      console.log((documentSnapshot, 'fetching'));
       return documentSnapshot.data();
     });
 };

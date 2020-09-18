@@ -1,13 +1,20 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import Modal from "react-native-modal";
-import { Text, ActivityIndicator, useTheme } from "react-native-paper";
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import Modal from 'react-native-modal';
+import {Text, ActivityIndicator, useTheme} from 'react-native-paper';
 
-const CustomModal = ({ visible, children, containerStyle }) => {
-  const { colors } = useTheme();
+const CustomModal = ({visible, children, containerStyle, noBackground}) => {
+  const {colors} = useTheme();
   return (
     <Modal isVisible={visible}>
-      <View style={[containerStyle, { backgroundColor: colors.background }]}>
+      <View
+        style={
+          !noBackground && [
+            {backgroundColor: colors.background},
+            containerStyle,
+          ]
+        }
+      >
         {children}
       </View>
     </Modal>

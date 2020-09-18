@@ -13,7 +13,7 @@ import CustomModal from '../common/CustomModal';
 import CustomButton from '../common/CustomButton';
 import CustomInput from '../common/CustomInput';
 import {useAppState} from '../contextStore/StateProvider';
-import {updateFirestore} from '../util/user';
+import {updateFirestore} from '../util/firestore';
 import {useNavigation} from '@react-navigation/native';
 
 const User = ({route}) => {
@@ -25,8 +25,12 @@ const User = ({route}) => {
   // Setting local userDetail for manipulation
   const [userInfo, setUserInfo] = useState({});
   const [userData, setUserData] = useState({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const {colors} = useTheme();
+  const {name, email, phone, photoUrl} = userData;
+
+  // local state for userdetails editing modal
 
   // Setting local userDetail initially from store
   useEffect(() => {
@@ -63,12 +67,6 @@ const User = ({route}) => {
       console.log(data, 'submitted');
     });
   }, [userInfo, updateFirestore, uid]);
-
-  const {name, email, phone, address, photoUrl} = userData;
-  const {suite = '', street = '', city = ''} = !isEmpty(address) && address;
-
-  // local state for userdetails editing modal
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   //  Rendering user detail
   const renderUserDetails = (label, value) => {
@@ -237,7 +235,6 @@ const User = ({route}) => {
             {renderUserDetails('Name', name)}
             {renderUserDetails('Email', email)}
             {renderUserDetails('Contact', phone)}
-            {renderUserDetails('Address', `${suite} ${street} ${city}`)}
           </View>
         </View>
         <CustomButton

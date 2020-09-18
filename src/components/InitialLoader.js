@@ -7,7 +7,7 @@ import {isEmpty} from 'lodash';
 import CustomModal from '../common/CustomModal';
 import ThemeWrapper from '../theme/ThemeWrapper';
 import {useAppState} from '../contextStore/StateProvider';
-import {getFirestore} from '../util/user';
+import {getFirestore} from '../util/firestore';
 
 function InitialLoader({navigation}) {
   const [{loadingData}, dispatch] = useAppState();

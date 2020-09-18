@@ -6,7 +6,7 @@ import CustomInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
 import ThemeWrapper from '../theme/ThemeWrapper';
 import {useAppState} from '../contextStore/StateProvider';
-import {setFirestore} from '../util/user';
+import {setFirestore} from '../util/firestore';
 import {getData} from '../util/asyncStorage';
 import useBackButton from '../util/useBackButton';
 
