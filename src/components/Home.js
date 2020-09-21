@@ -9,7 +9,7 @@ import {getAllFirestore} from '../util/firestore';
 
 const RecentsRoute = () => <Text>Recents</Text>;
 
-const BotttomTabNavigation = ({}) => {
+const Home = ({}) => {
   const [{}, dispatch] = useAppState();
   useBackButton();
   // For bottom navigator
@@ -53,4 +53,4 @@ const BotttomTabNavigation = ({}) => {
   );
 };
 
-export default BotttomTabNavigation;
+export default Home;

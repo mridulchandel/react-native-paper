@@ -3,10 +3,10 @@ import {View, StyleSheet, Platform, Pressable} from 'react-native';
 import {Avatar, useTheme, Text, Appbar} from 'react-native-paper';
 import {isEmpty} from 'lodash';
 import storage from '@react-native-firebase/storage';
-import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
+import {useNavigation} from '@react-navigation/native';
 
 import Header from '../common/Header';
 import CustomModal from '../common/CustomModal';
@@ -14,7 +14,6 @@ import CustomButton from '../common/CustomButton';
 import CustomInput from '../common/CustomInput';
 import {useAppState} from '../contextStore/StateProvider';
 import {updateFirestore} from '../util/firestore';
-import {useNavigation} from '@react-navigation/native';
 
 const User = ({route}) => {
   const navigation = useNavigation();
@@ -41,9 +40,17 @@ const User = ({route}) => {
         console.log(documentSnapshot.data(), 'snappy');
         setUserInfo(documentSnapshot.data());
         setUserData(documentSnapshot.data());
+        dispatch({
+          type: 'ADD_USER_DATA',
+          data: documentSnapshot.data(),
+        });
       });
     return () => getUserSnap();
   }, []);
+
+  const handleLeftIcon = () => {
+    navigation.toggleDrawer();
+  };
 
   // For editing local userDetail
   const editUserInfo = useCallback(
@@ -161,15 +168,6 @@ const User = ({route}) => {
     setUserInfo(userData);
   };
 
-  const signOut = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        console.log('User signed out!');
-        navigation.popToTop();
-      });
-  };
-
   // For rendering modal
   const renderModal = () => {
     const {name, email, phone, nameError, emailError, phoneError} = userInfo;
@@ -218,7 +216,11 @@ const User = ({route}) => {
 
   return (
     <>
-      <Header title={name ? name.split(' ')[0] : 'User'} />
+      <Header
+        title={name ? name.split(' ')[0] : 'User'}
+        leftIcon="hamburger"
+        handleLeftIcon={handleLeftIcon}
+      />
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
           <Pressable onPress={onProfileUploading}>
@@ -241,7 +243,6 @@ const User = ({route}) => {
           text="Edit User Details"
           clicked={() => setIsModalVisible(true)}
         />
-        <CustomButton text="Sign Out" clicked={signOut} />
       </View>
       {renderModal()}
     </>

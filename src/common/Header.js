@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Appbar } from 'react-native-paper';
-import { Platform, StyleSheet } from 'react-native';
+import {Appbar} from 'react-native-paper';
+import {Platform, StyleSheet} from 'react-native';
 
-import { useAppState } from '../contextStore/StateProvider';
-const Header = ({ title, subtitle, backButton }) => {
-  const [{ themeColor }, dispatch] = useAppState();
+import {useAppState} from '../contextStore/StateProvider';
+const Header = ({title, subtitle, leftIcon, handleLeftIcon}) => {
+  const [{themeColor}, dispatch] = useAppState();
 
   const onToggleSwitch = () => {
     dispatch({
@@ -14,7 +14,11 @@ const Header = ({ title, subtitle, backButton }) => {
 
   return (
     <Appbar.Header>
-      <Appbar.BackAction onPress={() => {}} />
+      {leftIcon ? (
+        <Appbar.Action icon={leftIcon} onPress={handleLeftIcon} />
+      ) : (
+        <Appbar.BackAction onPress={() => {}} />
+      )}
       <Appbar.Content
         title={title}
         subtitle={subtitle}

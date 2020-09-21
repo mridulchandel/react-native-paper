@@ -36,7 +36,7 @@ function InitialLoader({navigation}) {
               photoUrl,
             });
           } else {
-            navigation.navigate('Home');
+            navigation.navigate('Sidebar');
           }
           dispatch({
             type: 'SET_LOADING_DATA',

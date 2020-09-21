@@ -111,7 +111,7 @@ function UserDetails({navigation, route}) {
     setFirestore('Users', uid, {name, phone, email, photoUrl}).then((data) => {
       console.log(data, 'submitted');
     });
-    navigation.navigate('Home');
+    navigation.navigate('Sidebar');
   };
 
   return (

@@ -1,6 +1,7 @@
 export const initialState = {
   themeColor: 'light',
   uid: '',
+  userData: {},
   productData: [],
   loadingData: true,
 };
@@ -17,6 +18,11 @@ function contextReducer(state = initialState, action) {
       return {
         ...state,
         uid: action.data,
+      };
+    case 'ADD_USER_DATA':
+      return {
+        ...state,
+        userData: action.data,
       };
     case 'ADD_PRODUCT_DATA':
       return {
