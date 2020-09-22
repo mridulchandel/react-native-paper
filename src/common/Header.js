@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Appbar} from 'react-native-paper';
-import {Platform, StyleSheet} from 'react-native';
 
 import {useAppState} from '../contextStore/StateProvider';
 const Header = ({title, subtitle, leftIcon, handleLeftIcon}) => {
@@ -14,16 +13,8 @@ const Header = ({title, subtitle, leftIcon, handleLeftIcon}) => {
 
   return (
     <Appbar.Header>
-      {leftIcon ? (
-        <Appbar.Action icon={leftIcon} onPress={handleLeftIcon} />
-      ) : (
-        <Appbar.BackAction onPress={() => {}} />
-      )}
-      <Appbar.Content
-        title={title}
-        subtitle={subtitle}
-        style={styles.contentStyle}
-      />
+      {leftIcon && <Appbar.Action icon={leftIcon} onPress={handleLeftIcon} />}
+      <Appbar.Content title={title} subtitle={subtitle} />
       <Appbar.Action
         icon={themeColor === 'light' ? 'octagram' : 'octagram-outline'}
         onPress={onToggleSwitch}
@@ -33,9 +24,3 @@ const Header = ({title, subtitle, leftIcon, handleLeftIcon}) => {
 };
 
 export default Header;
-
-const styles = StyleSheet.create({
-  contentStyle: {
-    alignItems: 'center',
-  },
-});

@@ -5,7 +5,7 @@ export const theme = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      primary: '#228922',
+      primary: '#EA4D4C',
       accent: 'yellow',
       // text: "#228922"
     },

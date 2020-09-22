@@ -6,7 +6,6 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
-import {useNavigation} from '@react-navigation/native';
 
 import Header from '../common/Header';
 import CustomModal from '../common/CustomModal';
@@ -16,8 +15,6 @@ import {useAppState} from '../contextStore/StateProvider';
 import {updateFirestore} from '../util/firestore';
 
 const User = ({route}) => {
-  const navigation = useNavigation();
-
   // Getting userDetail from store
   const [{uid}, dispatch] = useAppState();
 
@@ -47,10 +44,6 @@ const User = ({route}) => {
       });
     return () => getUserSnap();
   }, []);
-
-  const handleLeftIcon = () => {
-    navigation.toggleDrawer();
-  };
 
   // For editing local userDetail
   const editUserInfo = useCallback(
@@ -216,11 +209,7 @@ const User = ({route}) => {
 
   return (
     <>
-      <Header
-        title={name ? name.split(' ')[0] : 'User'}
-        leftIcon="hamburger"
-        handleLeftIcon={handleLeftIcon}
-      />
+      <Header title={name ? name.split(' ')[0] : 'User'} />
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
           <Pressable onPress={onProfileUploading}>

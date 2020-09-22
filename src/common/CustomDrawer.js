@@ -6,6 +6,7 @@ import auth from '@react-native-firebase/auth';
 
 import CustomButton from './CustomButton';
 import {useAppState} from '../contextStore/StateProvider';
+import ThemeWrapper from '../theme/ThemeWrapper';
 
 function CustomDrawer(props) {
   const {colors} = useTheme();
@@ -22,7 +23,7 @@ function CustomDrawer(props) {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: colors.background}]}>
+    <ThemeWrapper styling={styles.container}>
       <View style={[styles.user, {borderColor: colors.primary}]}>
         <Avatar.Image
           source={{
@@ -35,7 +36,7 @@ function CustomDrawer(props) {
         <Text style={styles.userName}>{userData.name}</Text>
       </View>
       <CustomButton text="Sign Out" clicked={signOut} />
-    </View>
+    </ThemeWrapper>
   );
 }
 
@@ -43,7 +44,6 @@ export default CustomDrawer;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 10,
   },

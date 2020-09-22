@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
 import {View, Image, StyleSheet} from 'react-native';
-import {Text, TouchableRipple, Appbar, useTheme} from 'react-native-paper';
+import {
+  Text,
+  TouchableRipple,
+  Appbar,
+  useTheme,
+  Subheading,
+  Paragraph,
+} from 'react-native-paper';
 
 import CustomButton from '../common/CustomButton';
 import CustomModal from '../common/CustomModal';
@@ -24,15 +31,15 @@ const Product = ({title, image, description, price}) => {
         />
         <View style={styles.productDetail}>
           <View style={styles.textContainer}>
-            <Text style={styles.title} numberOfLines={1}>
+            <Subheading style={styles.title} numberOfLines={!isModal ? 1 : 0}>
               {title}
-            </Text>
-            <Text
+            </Subheading>
+            <Paragraph
               style={!isModal && styles.description}
               numberOfLines={!isModal ? 1 : 0}
             >
               {description}
-            </Text>
+            </Paragraph>
             <Text style={styles.price}>₹ {price}</Text>
           </View>
         </View>
@@ -88,6 +95,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignItems: 'center',
+    paddingHorizontal: 5,
   },
   title: {
     fontWeight: 'bold',

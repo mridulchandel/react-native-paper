@@ -16,13 +16,13 @@ const Home = ({}) => {
   const [index, setIndex] = useState(0);
 
   const routes = [
-    {
-      key: 'user',
-      title: 'User',
-      icon: 'account',
-    },
     {key: 'products', title: 'Products', icon: 'album'},
     {key: 'recents', title: 'Recents', icon: 'history'},
+    {
+      key: 'user',
+      title: 'Profile',
+      icon: 'account',
+    },
   ];
 
   // fetch userDetail

@@ -3,6 +3,8 @@ import React, {useState, useCallback} from 'react';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
+import {View, StyleSheet, ImageBackground} from 'react-native';
+import {useTheme} from 'react-native-paper';
 
 import CustomButton from '../common/CustomButton';
 import CustomInput from '../common/CustomInput';
@@ -18,14 +20,7 @@ function SignIn({navigation}) {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [phoneConfirm, setPhoneConfirm] = useState(null);
-  // const onSignIn = () => {
-  //   storeData('loggedIn', 'true');
-  //   navigation.navigate('Home');
-  //   dispatch({
-  //     type: 'SET_LOADING_DATA',
-  //     data: true,
-  //   });
-  // };
+  const {colors} = useTheme();
 
   const loading = () => {
     // dispatch({
@@ -174,33 +169,53 @@ function SignIn({navigation}) {
   return (
     <>
       <Header title="Sign In" />
-      <ThemeWrapper styling={{justifyContent: 'center'}}>
-        <CustomButton
-          icon="facebook"
-          text="Log In with Facebook"
-          clicked={handleFacebookSignIn}
-        />
-        <CustomButton
-          icon="google"
-          text="Log In with Gmail"
-          clicked={handleGoogleSignIn}
-        />
-        <CustomInput
-          label={phoneConfirm ? 'Confirm code' : 'Mobile No.'}
-          value={phoneConfirm ? code : phone}
-          onChange={onPhoneChange}
-          inputKey={phoneConfirm ? 'code' : 'phone'}
-          keyboardType="number-pad"
-          maxLength={10}
-        />
-        <CustomButton
-          text={phoneConfirm ? 'Confirm code' : 'Log In with Mobile'}
-          clicked={handlePhoneSignIn}
-          disabled={phone.length < 10}
-        />
-      </ThemeWrapper>
+      <ImageBackground
+        source={require('../assets/sign-in.jpg')}
+        style={[styles.image]}
+        resizeMode="stretch"
+      >
+        <View style={[styles.card, {backgroundColor: colors.background}]}>
+          <CustomButton
+            icon="facebook"
+            text="Log In with Facebook"
+            clicked={handleFacebookSignIn}
+          />
+          <CustomButton
+            icon="google"
+            text="Log In with Gmail"
+            clicked={handleGoogleSignIn}
+          />
+          <CustomInput
+            label={phoneConfirm ? 'Confirm code' : 'Mobile No.'}
+            value={phoneConfirm ? code : phone}
+            onChange={onPhoneChange}
+            inputKey={phoneConfirm ? 'code' : 'phone'}
+            keyboardType="number-pad"
+            maxLength={10}
+          />
+          <CustomButton
+            text={phoneConfirm ? 'Confirm code' : 'Log In with Mobile'}
+            clicked={handlePhoneSignIn}
+            disabled={phone.length < 10}
+          />
+        </View>
+      </ImageBackground>
     </>
   );
 }
 
 export default SignIn;
+
+const styles = StyleSheet.create({
+  card: {
+    width: '80%',
+    paddingVertical: 20,
+    borderRadius: 20,
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+});

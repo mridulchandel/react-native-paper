@@ -5,9 +5,15 @@ import Header from '../common/Header';
 import {useAppState} from '../contextStore/StateProvider';
 import Product from './Product';
 import CustomCard from '../common/CustomCard';
+import {useNavigation} from '@react-navigation/native';
 
 const Products = ({route}) => {
   const [{productData}, dispatch] = useAppState();
+  const navigation = useNavigation();
+
+  const handleLeftIcon = () => {
+    navigation.toggleDrawer();
+  };
 
   const renderItem = ({item}) => (
     <Product
@@ -21,7 +27,11 @@ const Products = ({route}) => {
 
   return (
     <>
-      <Header title={route.title} />
+      <Header
+        title={route.title}
+        leftIcon="hamburger"
+        handleLeftIcon={handleLeftIcon}
+      />
       <FlatList
         data={productData}
         renderItem={renderItem}
