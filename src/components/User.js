@@ -3,7 +3,6 @@ import {View, StyleSheet, Platform, Pressable} from 'react-native';
 import {Avatar, useTheme, Text, Appbar} from 'react-native-paper';
 import {isEmpty} from 'lodash';
 import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 
@@ -13,37 +12,24 @@ import CustomButton from '../common/CustomButton';
 import CustomInput from '../common/CustomInput';
 import {useAppState} from '../contextStore/StateProvider';
 import {updateFirestore} from '../util/firestore';
+import useDrawer from '../util/useDrawer';
 
 const User = ({route}) => {
   // Getting userDetail from store
-  const [{uid}, dispatch] = useAppState();
+  const [{uid, userData}] = useAppState();
+  const {iconName, handleDrawer} = useDrawer();
 
   // Setting local userDetail for manipulation
   const [userInfo, setUserInfo] = useState({});
-  const [userData, setUserData] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const {colors} = useTheme();
   const {name, email, phone, photoUrl} = userData;
 
-  // local state for userdetails editing modal
-
   // Setting local userDetail initially from store
   useEffect(() => {
-    const getUserSnap = firestore()
-      .collection('Users')
-      .doc(uid)
-      .onSnapshot((documentSnapshot) => {
-        console.log(documentSnapshot.data(), 'snappy');
-        setUserInfo(documentSnapshot.data());
-        setUserData(documentSnapshot.data());
-        dispatch({
-          type: 'ADD_USER_DATA',
-          data: documentSnapshot.data(),
-        });
-      });
-    return () => getUserSnap();
-  }, []);
+    setUserInfo(userData);
+  }, [userData, setUserInfo]);
 
   // For editing local userDetail
   const editUserInfo = useCallback(
@@ -209,7 +195,11 @@ const User = ({route}) => {
 
   return (
     <>
-      <Header title={name ? name.split(' ')[0] : 'User'} />
+      <Header
+        title={name ? name.split(' ')[0] : 'User'}
+        leftIcon={iconName}
+        handleLeftIcon={handleDrawer}
+      />
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
           <Pressable onPress={onProfileUploading}>

@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 import {ActivityIndicator, Text} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import {isEmpty} from 'lodash';
+import SplashScreen from 'react-native-splash-screen';
 
 import CustomModal from '../common/CustomModal';
 import ThemeWrapper from '../theme/ThemeWrapper';
@@ -38,21 +39,15 @@ function InitialLoader({navigation}) {
           } else {
             navigation.navigate('Sidebar');
           }
-          dispatch({
-            type: 'SET_LOADING_DATA',
-            data: false,
-          });
+          SplashScreen.hide();
         });
       } else {
         navigation.navigate('SignIn');
         dispatch({
-          type: 'SET_LOADING_DATA',
-          data: false,
-        });
-        dispatch({
           type: 'SET_UID',
           data: '',
         });
+        SplashScreen.hide();
       }
     });
     return unsubscribe;

@@ -59,3 +59,16 @@ export const updateFirestore = (collectionName, uid, data) => {
       return false;
     });
 };
+
+export const deleteFirestore = (collectionName, uid) => {
+  return firestore()
+    .collection(collectionName)
+    .doc(uid)
+    .delete()
+    .then(() => {
+      return true;
+    })
+    .catch((err) => {
+      return false;
+    });
+};

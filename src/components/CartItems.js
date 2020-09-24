@@ -1,18 +1,19 @@
 import React from 'react';
-import {FlatList, Platform} from 'react-native';
+import {FlatList} from 'react-native';
 
 import Header from '../common/Header';
 import {useAppState} from '../contextStore/StateProvider';
-import Product from './Product';
 import CustomCard from '../common/CustomCard';
+import CartItem from './CartItem';
 import useDrawer from '../util/useDrawer';
 
-const Products = ({route}) => {
-  const [{productData}] = useAppState();
+function CartItems() {
+  const [{cartData}] = useAppState();
+
   const {iconName, handleDrawer} = useDrawer();
 
   const renderItem = ({item}) => (
-    <Product
+    <CartItem
       key={item.key}
       id={item.id}
       title={item.title}
@@ -24,25 +25,20 @@ const Products = ({route}) => {
 
   return (
     <>
-      <Header
-        title={route.title}
-        leftIcon={iconName}
-        handleLeftIcon={handleDrawer}
-      />
+      <Header title="Cart" leftIcon={iconName} handleLeftIcon={handleDrawer} />
       <FlatList
-        data={productData}
+        data={cartData}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        numColumns={2}
         ListEmptyComponent={
           <CustomCard
             source={require('../assets/sad-face.png')}
-            message="Nothing to show, please try again later"
+            message="Nothing to show, Cart is Empty"
           />
         }
       />
     </>
   );
-};
+}
 
-export default Products;
+export default CartItems;

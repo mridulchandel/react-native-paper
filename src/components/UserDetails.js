@@ -139,6 +139,7 @@ function UserDetails({navigation, route}) {
         inputKey="phone"
         error={phoneError}
         keyboardType="number-pad"
+        maxLength={10}
       />
       <CustomButton
         text="Save"

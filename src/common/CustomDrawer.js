@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useTheme, Text, Avatar} from 'react-native-paper';
+import {useTheme, Text, Avatar, Title, Paragraph} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
@@ -33,7 +33,10 @@ function CustomDrawer(props) {
               : 'https://cdn.iconscout.com/icon/free/png-512/avatar-370-456322.png',
           }}
         />
-        <Text style={styles.userName}>{userData.name}</Text>
+        <View style={styles.userName}>
+          <Title>{userData.name}</Title>
+          <Paragraph>{userData.email}</Paragraph>
+        </View>
       </View>
       <CustomButton text="Sign Out" clicked={signOut} />
     </ThemeWrapper>
@@ -55,6 +58,6 @@ const styles = StyleSheet.create({
   },
   userName: {
     paddingLeft: 10,
-    fontSize: 18,
+    maxWidth: '80%',
   },
 });

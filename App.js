@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {RootSiblingParent} from 'react-native-root-siblings';
 
 import {fcmService} from './src/Notification/FCMService';
 import {localNotificationService} from './src/Notification/LocalNotificationoService';
@@ -13,7 +14,7 @@ export default function App() {
     fcmService.register(onRegister, onNotification, onOpenNotification);
     localNotificationService.configure(onOpenNotification);
 
-    function onRegister() {
+    function onRegister(token) {
       console.log('[App] onRegister: ', token);
     }
 
@@ -51,8 +52,10 @@ export default function App() {
   }, []);
 
   return (
-    <StateProvider initialState={initialState} reducer={contextReducer}>
-      <Paper />
-    </StateProvider>
+    <RootSiblingParent>
+      <StateProvider initialState={initialState} reducer={contextReducer}>
+        <Paper />
+      </StateProvider>
+    </RootSiblingParent>
   );
 }

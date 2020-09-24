@@ -2,7 +2,7 @@ import {useCallback} from 'react';
 import {BackHandler} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {toast} from './toast';
+import {toastMsg} from './toast';
 
 function useBackButton() {
   let backPressed = 0;
@@ -13,7 +13,7 @@ function useBackButton() {
       BackHandler.exitApp();
     } else {
       backPressed = 1;
-      toast('Press Again to exit');
+      toastMsg(true, 'Press Again to exit');
       setTimeout(() => {
         backPressed = 0;
       }, 4000);

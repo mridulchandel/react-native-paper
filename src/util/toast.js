@@ -1,9 +1,9 @@
 import Toast from 'react-native-root-toast';
 
 // Add a Toast on screen.
-export const toast = (message) => {
+export const toast = (message, duration) => {
   return Toast.show(message, {
-    duration: Toast.durations.LONG,
+    duration: duration,
     position: Toast.positions.BOTTOM,
     shadow: true,
     animation: true,
@@ -22,4 +22,11 @@ export const toast = (message) => {
       // calls on toast\`s hide animation end.
     },
   });
+};
+
+export const toastMsg = (isSuccess, msg, shortDuration) => {
+  const duration = shortDuration ? Toast.durations.SHORT : Toast.durations.LONG;
+  const toastMessage = isSuccess ? msg : 'Something Went Wrong!';
+  console.log(toastMessage, 'toast');
+  toast(toastMessage, duration);
 };

@@ -3,7 +3,8 @@ export const initialState = {
   uid: '',
   userData: {},
   productData: [],
-  loadingData: true,
+  cartData: [],
+  loadingData: false,
 };
 
 function contextReducer(state = initialState, action) {
@@ -28,6 +29,11 @@ function contextReducer(state = initialState, action) {
       return {
         ...state,
         productData: action.data,
+      };
+    case 'ADD_CART_DATA':
+      return {
+        ...state,
+        cartData: action.data,
       };
     case 'SET_LOADING_DATA':
       return {

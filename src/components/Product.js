@@ -11,14 +11,33 @@ import {
 
 import CustomButton from '../common/CustomButton';
 import CustomModal from '../common/CustomModal';
+import {useAppState} from '../contextStore/StateProvider';
+import {setFirestore} from '../util/firestore';
+import {toastMsg} from '../util/toast';
 
-const Product = ({title, image, description, price}) => {
+const Product = ({id, title, image, description, price}) => {
   const [isProductDetail, setIsProductDetail] = useState(false);
+  const [{uid}] = useAppState();
 
   const {colors} = useTheme();
 
   const onCloseModal = () => {
     setIsProductDetail(false);
+  };
+
+  // Adding to cart for particular user
+  const addToCart = (pid) => {
+    const data = {
+      title,
+      image,
+      description,
+      price,
+    };
+    // Firestore nesting
+    setFirestore(`Users/${uid}/Cart`, pid, data).then((data) => {
+      toastMsg(data, 'Added to Cart', true);
+    });
+    onCloseModal();
   };
 
   const renderProduct = (isModal) => {
@@ -43,7 +62,7 @@ const Product = ({title, image, description, price}) => {
             <Text style={styles.price}>₹ {price}</Text>
           </View>
         </View>
-        <CustomButton text="Add To Cart" clicked={() => {}} />
+        <CustomButton text="Add To Cart" clicked={() => addToCart(id)} />
       </View>
     );
   };
@@ -64,6 +83,7 @@ const Product = ({title, image, description, price}) => {
       </CustomModal>
     );
   };
+
   return (
     <>
       <TouchableRipple
