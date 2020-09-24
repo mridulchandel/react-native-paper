@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, StyleSheet, Platform, Pressable} from 'react-native';
 import {Avatar, useTheme, Text, Appbar} from 'react-native-paper';
-import {isEmpty} from 'lodash';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -13,6 +12,13 @@ import CustomInput from '../common/CustomInput';
 import {useAppState} from '../contextStore/StateProvider';
 import {updateFirestore} from '../util/firestore';
 import useDrawer from '../util/useDrawer';
+import {isEmail, isEmpty, isPhone} from '../util/validation';
+
+const initialError = {
+  nameError: '',
+  emailError: '',
+  phoneError: '',
+};
 
 const User = ({route}) => {
   // Getting userDetail from store
@@ -21,6 +27,7 @@ const User = ({route}) => {
 
   // Setting local userDetail for manipulation
   const [userInfo, setUserInfo] = useState({});
+  const [errorInfo, setErrorInfo] = useState(initialError);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const {colors} = useTheme();
@@ -35,13 +42,25 @@ const User = ({route}) => {
   const editUserInfo = useCallback(
     (key, value) => {
       const updateUserInfo = {...userInfo};
+      const updateErrorInfo = {...errorInfo};
       updateUserInfo[key] = value;
-      if (isEmpty(value.trim())) {
-        updateUserInfo[key + 'Error'] = 'Invalid Input';
-      } else {
-        updateUserInfo[key + 'Error'] = '';
+      let error = '';
+
+      if (isEmpty(value)) {
+        error = `${key.charAt(0).toUpperCase() + key.slice(1)} can't be empty`;
+      } else if (key === 'email') {
+        if (!isEmail(value)) {
+          error = `Please enter a valid email`;
+        }
+      } else if (key === 'phone') {
+        if (!isPhone(value)) {
+          error = `Please enter a valid Phone`;
+        }
       }
+
+      updateErrorInfo[key + 'Error'] = error;
       setUserInfo(updateUserInfo);
+      setErrorInfo(updateErrorInfo);
     },
     [userInfo, setUserInfo]
   );
@@ -51,6 +70,7 @@ const User = ({route}) => {
     const {name, phone, email} = userInfo;
     updateFirestore('Users', uid, {name, phone, email}).then((data) => {
       console.log(data, 'submitted');
+      setIsModalVisible(false);
     });
   }, [userInfo, updateFirestore, uid]);
 
@@ -138,18 +158,21 @@ const User = ({route}) => {
   // For saving data on clicking save button
   const onSaveModal = () => {
     onSaveUserInfo();
-    setIsModalVisible(false);
+    // setTimeout(() => {
+    // }, 500);
   };
 
   // For closing modal on clicking cross icon
   const onCloseModal = () => {
     setIsModalVisible(false);
     setUserInfo(userData);
+    setErrorInfo(initialError);
   };
 
   // For rendering modal
   const renderModal = () => {
-    const {name, email, phone, nameError, emailError, phoneError} = userInfo;
+    const {name, email, phone} = userInfo;
+    const {nameError, emailError, phoneError} = errorInfo;
     return (
       <CustomModal
         visible={isModalVisible}
@@ -167,6 +190,8 @@ const User = ({route}) => {
           onChange={editUserInfo}
           inputKey="name"
           error={nameError}
+          autoFocus
+          autoCapitalize="words"
         />
         <CustomInput
           label="Email"
@@ -175,6 +200,7 @@ const User = ({route}) => {
           inputKey="email"
           error={emailError}
           keyboardType="email-address"
+          autoCompleteType="off"
         />
         <CustomInput
           label="Contact"
@@ -182,7 +208,8 @@ const User = ({route}) => {
           onChange={editUserInfo}
           inputKey="phone"
           error={phoneError}
-          keyboardType="number-pad"
+          keyboardType="phone-pad"
+          maxLength={10}
         />
         <CustomButton
           text="Save"

@@ -1,5 +1,4 @@
 import React, {useReducer, useCallback, useEffect} from 'react';
-import {isEmpty} from 'lodash';
 
 import Header from '../common/Header';
 import CustomInput from '../common/CustomInput';
@@ -7,8 +6,8 @@ import CustomButton from '../common/CustomButton';
 import ThemeWrapper from '../theme/ThemeWrapper';
 import {useAppState} from '../contextStore/StateProvider';
 import {setFirestore} from '../util/firestore';
-import {getData} from '../util/asyncStorage';
 import useBackButton from '../util/useBackButton';
+import {isEmail, isEmpty, isPhone} from '../util/validation';
 
 const initialState = {
   name: '',
@@ -70,43 +69,50 @@ function UserDetails({navigation, route}) {
     }
   }, [route.params]);
 
-  const editUserInfo = useCallback((key, value) => {
-    let type = '';
-    const data = value.trim();
-    let error = '';
-    if (key === 'name') {
-      type = 'SET_NAME';
-      if (isEmpty(data)) {
-        error = "Name can't be empty";
-      }
-    } else if (key === 'email') {
-      type = 'SET_EMAIL';
-      if (isEmpty(data)) {
-        error = "Email can't be empty";
-      }
-    } else if (key === 'phone') {
-      type = 'SET_PHONE';
-      if (isEmpty(data)) {
-        error = "Phone can't be empty";
-      }
-    }
-    dispatch({
-      type,
-      data,
-      error,
-    });
-  }, []);
+  const editUserInfo = useCallback(
+    (key, value) => {
+      let type = 'SET_' + key.toUpperCase();
+      const data = value;
+      let error = '';
 
-  const onSaveModal = async () => {
-    // dispatchAppState({
-    //   type: 'ADD_USER_DATA',
-    //   data: {
-    //     name,
-    //     phone,
-    //     email,
-    //   },
-    // });
-    // const uid = await getData('uid');
+      if (isEmpty(value)) {
+        error = `${key.charAt(0).toUpperCase() + key.slice(1)} can't be empty`;
+      } else if (key === 'email') {
+        if (!isEmail(value)) {
+          error = `Please enter a valid email`;
+        }
+      } else if (key === 'phone') {
+        if (!isPhone(value)) {
+          error = `Please enter a valid Phone`;
+        }
+      }
+
+      // if (key === 'name') {
+      //   type = 'SET_NAME';
+      //   if (isEmpty(data)) {
+      //     error = "Name can't be empty";
+      //   }
+      // } else if (key === 'email') {
+      //   type = 'SET_EMAIL';
+      //   if (isEmpty(data)) {
+      //     error = "Email can't be empty";
+      //   }
+      // } else if (key === 'phone') {
+      //   type = 'SET_PHONE';
+      //   if (isEmpty(data)) {
+      //     error = "Phone can't be empty";
+      //   }
+      // }
+      dispatch({
+        type,
+        data,
+        error,
+      });
+    },
+    [dispatch]
+  );
+
+  const onSaveModal = () => {
     const photoUrl = route.params?.photoUrl;
     setFirestore('Users', uid, {name, phone, email, photoUrl}).then((data) => {
       console.log(data, 'submitted');
@@ -123,6 +129,8 @@ function UserDetails({navigation, route}) {
         onChange={editUserInfo}
         inputKey="name"
         error={nameError}
+        autoFocus
+        autoCapitalize="words"
       />
       <CustomInput
         label="Email"
@@ -131,6 +139,7 @@ function UserDetails({navigation, route}) {
         inputKey="email"
         error={emailError}
         keyboardType="email-address"
+        autoCompleteType="off"
       />
       <CustomInput
         label="Contact"
@@ -138,7 +147,7 @@ function UserDetails({navigation, route}) {
         onChange={editUserInfo}
         inputKey="phone"
         error={phoneError}
-        keyboardType="number-pad"
+        keyboardType="phone-pad"
         maxLength={10}
       />
       <CustomButton

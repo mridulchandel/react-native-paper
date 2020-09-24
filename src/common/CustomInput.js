@@ -10,7 +10,7 @@ const CustomInput = ({style, onChange, inputKey, error, ...props}) => {
         {...props}
         error={error}
         style={[styles.input, {backgroundColor: colors.background}, style]}
-        onChangeText={(text) => onChange(inputKey, text.trim())}
+        onChangeText={(text) => onChange(inputKey, text)}
       />
       <HelperText type="error" visible={error}>
         {error}
