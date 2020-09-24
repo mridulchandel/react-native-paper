@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Image, StyleSheet, Text} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import {
   Subheading,
   Paragraph,
-  Title,
+  Text,
   Appbar,
   useTheme,
 } from 'react-native-paper';
@@ -45,7 +45,7 @@ function CartItem({id, title, image, description, price}) {
         <Paragraph>{description}</Paragraph>
         <Text style={styles.price}>₹ {price}</Text>
       </View>
-      <CustomButton text="Add To Cart" clicked={() => {}} />
+      <CustomButton text="Place Order" clicked={() => {}} />
     </View>
   );
 }
