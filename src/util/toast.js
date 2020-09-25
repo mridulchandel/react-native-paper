@@ -4,7 +4,7 @@ import Toast from 'react-native-root-toast';
 export const toast = (message, duration) => {
   return Toast.show(message, {
     duration: duration,
-    position: Toast.positions.BOTTOM,
+    position: -60,
     shadow: true,
     animation: true,
     hideOnPress: true,

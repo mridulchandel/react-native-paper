@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, StyleSheet, Platform, Pressable} from 'react-native';
-import {Avatar, useTheme, Text, Appbar} from 'react-native-paper';
+import {Avatar, useTheme, Appbar, Title, Subheading} from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -13,6 +13,7 @@ import {useAppState} from '../contextStore/StateProvider';
 import {updateFirestore} from '../util/firestore';
 import useDrawer from '../util/useDrawer';
 import {isEmail, isEmpty, isPhone} from '../util/validation';
+import {useDimensions} from '@react-native-community/hooks';
 
 const initialError = {
   nameError: '',
@@ -24,6 +25,8 @@ const User = ({route}) => {
   // Getting userDetail from store
   const [{uid, userData}] = useAppState();
   const {iconName, handleDrawer} = useDrawer();
+
+  const {height} = useDimensions().window;
 
   // Setting local userDetail for manipulation
   const [userInfo, setUserInfo] = useState({});
@@ -73,16 +76,6 @@ const User = ({route}) => {
       setIsModalVisible(false);
     });
   }, [userInfo, updateFirestore, uid]);
-
-  //  Rendering user detail
-  const renderUserDetails = (label, value) => {
-    return value?.trim() ? (
-      <View style={styles.detailsContainer}>
-        <Text style={styles.label}>{label}: </Text>
-        <Text style={styles.value}>{value}</Text>
-      </View>
-    ) : null;
-  };
 
   // Resizing image
   const imageResizing = (imageUri) => {
@@ -169,6 +162,16 @@ const User = ({route}) => {
     setErrorInfo(initialError);
   };
 
+  //  Rendering user detail
+  const renderUserDetails = (label, value) => {
+    return value?.trim() ? (
+      <View style={styles.detailsContainer}>
+        <Title style={styles.label}>{label}: </Title>
+        <Subheading style={styles.value}>{value}</Subheading>
+      </View>
+    ) : null;
+  };
+
   // For rendering modal
   const renderModal = () => {
     const {name, email, phone} = userInfo;
@@ -227,24 +230,28 @@ const User = ({route}) => {
         leftIcon={iconName}
         handleLeftIcon={handleDrawer}
       />
-      <View style={styles.container}>
-        <View style={styles.userInfoContainer}>
-          <Pressable onPress={onProfileUploading}>
-            <Avatar.Image
-              source={{
-                // uri: photoUrl,
-                uri: photoUrl
-                  ? photoUrl
-                  : 'https://cdn.iconscout.com/icon/free/png-512/avatar-370-456322.png',
-              }}
-            />
-          </Pressable>
-          <View>
-            {renderUserDetails('Name', name)}
-            {renderUserDetails('Email', email)}
-            {renderUserDetails('Contact', phone)}
-          </View>
-        </View>
+      <View
+        style={[
+          styles.card,
+          {backgroundColor: colors.accent, height: height / 6},
+        ]}
+      >
+        <Pressable onPress={onProfileUploading} style={styles.imageContainer}>
+          <Avatar.Image
+            size={140}
+            source={{
+              uri: photoUrl
+                ? photoUrl
+                : 'https://cdn.iconscout.com/icon/free/png-512/avatar-370-456322.png',
+            }}
+          />
+        </Pressable>
+      </View>
+
+      <View style={{top: 100}}>
+        {renderUserDetails('Name', name)}
+        {renderUserDetails('Email', email)}
+        {renderUserDetails('Contact', phone)}
         <CustomButton
           text="Edit User Details"
           clicked={() => setIsModalVisible(true)}
@@ -258,20 +265,31 @@ const User = ({route}) => {
 export default User;
 
 const styles = StyleSheet.create({
+  card: {
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 20,
+  },
   container: {
     marginHorizontal: 10,
     marginVertical: 20,
   },
-  userInfoContainer: {
-    flexDirection: 'row',
+  imageContainer: {
+    alignItems: 'center',
+    top: 60,
   },
   detailsContainer: {
     flexDirection: 'row',
+    alignItems: 'flex-end',
     paddingHorizontal: 10,
     width: '100%',
   },
   label: {
-    width: '22%',
+    width: '30%',
   },
   value: {
     width: '70%',

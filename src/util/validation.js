@@ -5,7 +5,7 @@ export const isEmpty = (value) => {
 };
 
 export const isEmail = (value) => {
-  return validator.isEmail(value.trim());
+  return validator.isEmail(value);
 };
 
 export const isPhone = (value) => {
