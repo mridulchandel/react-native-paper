@@ -32,7 +32,7 @@ function CartItem({id, title, image, description, price}) {
     ]);
   };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: colors.accent}]}>
       <Appbar.Action
         style={styles.modalCross}
         color={colors.text}

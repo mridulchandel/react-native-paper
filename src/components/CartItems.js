@@ -30,6 +30,7 @@ function CartItems() {
         data={cartData}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <CustomCard
             source={require('../assets/sad-face.png')}

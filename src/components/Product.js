@@ -36,8 +36,8 @@ const Product = ({id, title, image, description, price}) => {
     // Firestore nesting
     setFirestore(`Users/${uid}/Cart`, pid, data).then((data) => {
       toastMsg(data, 'Added to Cart', true);
+      onCloseModal();
     });
-    onCloseModal();
   };
 
   const renderProduct = (isModal) => {
@@ -53,10 +53,7 @@ const Product = ({id, title, image, description, price}) => {
             <Subheading style={styles.title} numberOfLines={!isModal ? 1 : 0}>
               {title}
             </Subheading>
-            <Paragraph
-              style={!isModal && styles.description}
-              numberOfLines={!isModal ? 1 : 0}
-            >
+            <Paragraph numberOfLines={!isModal ? 1 : 0}>
               {description}
             </Paragraph>
             <Text style={styles.price}>₹ {price}</Text>
@@ -87,7 +84,7 @@ const Product = ({id, title, image, description, price}) => {
   return (
     <>
       <TouchableRipple
-        style={styles.container}
+        style={[styles.container, {backgroundColor: colors.accent}]}
         onPress={() => {
           setIsProductDetail(true);
         }}
@@ -104,6 +101,15 @@ export default Product;
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
+    marginHorizontal: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 3,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
     flex: 0.5,
   },
   productDetail: {
@@ -119,9 +125,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
-  },
-  description: {
-    paddingHorizontal: 10,
   },
   price: {
     fontWeight: 'bold',

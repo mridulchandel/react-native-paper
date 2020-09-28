@@ -1,4 +1,5 @@
 import React, {useReducer, useCallback, useEffect} from 'react';
+import {ImageBackground, StyleSheet} from 'react-native';
 
 import Header from '../common/Header';
 import CustomInput from '../common/CustomInput';
@@ -121,42 +122,65 @@ function UserDetails({navigation, route}) {
   };
 
   return (
-    <ThemeWrapper>
+    <>
       <Header title="User Details" />
-      <CustomInput
-        label="Name"
-        value={name}
-        onChange={editUserInfo}
-        inputKey="name"
-        error={nameError}
-        autoFocus
-        autoCapitalize="words"
-      />
-      <CustomInput
-        label="Email"
-        value={email}
-        onChange={editUserInfo}
-        inputKey="email"
-        error={emailError}
-        keyboardType="email-address"
-        autoCompleteType="off"
-      />
-      <CustomInput
-        label="Contact"
-        value={phone}
-        onChange={editUserInfo}
-        inputKey="phone"
-        error={phoneError}
-        keyboardType="phone-pad"
-        maxLength={10}
-      />
-      <CustomButton
-        text="Save"
-        clicked={onSaveModal}
-        disabled={nameError || emailError || phoneError}
-      />
-    </ThemeWrapper>
+      <ImageBackground
+        source={require('../assets/sign-in.jpg')}
+        style={[styles.image]}
+        resizeMode="stretch"
+      >
+        <ThemeWrapper styling={styles.card}>
+          <CustomInput
+            label="Name"
+            value={name}
+            onChange={editUserInfo}
+            inputKey="name"
+            error={nameError}
+            autoFocus
+            autoCapitalize="words"
+          />
+          <CustomInput
+            label="Email"
+            value={email}
+            onChange={editUserInfo}
+            inputKey="email"
+            error={emailError}
+            keyboardType="email-address"
+            autoCompleteType="off"
+          />
+          <CustomInput
+            label="Contact"
+            value={phone}
+            onChange={editUserInfo}
+            inputKey="phone"
+            error={phoneError}
+            keyboardType="phone-pad"
+            maxLength={10}
+          />
+          <CustomButton
+            text="Save"
+            clicked={onSaveModal}
+            disabled={nameError || emailError || phoneError}
+          />
+        </ThemeWrapper>
+      </ImageBackground>
+    </>
   );
 }
 
 export default UserDetails;
+
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  card: {
+    width: '80%',
+    paddingVertical: 20,
+    borderRadius: 20,
+    flex: 0,
+  },
+});

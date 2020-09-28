@@ -24,7 +24,7 @@ function CustomDrawer(props) {
 
   return (
     <ThemeWrapper styling={styles.container}>
-      <View style={[styles.user, {borderColor: colors.primary}]}>
+      <View style={[styles.user, {borderColor: colors.accent}]}>
         <Avatar.Image
           source={{
             // uri: photoUrl,

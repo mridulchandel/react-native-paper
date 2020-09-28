@@ -34,6 +34,7 @@ const Products = ({route}) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={2}
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <CustomCard
             source={require('../assets/sad-face.png')}

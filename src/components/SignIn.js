@@ -1,26 +1,37 @@
 // import { auth } from "./firebase";
 import React, {useState, useCallback} from 'react';
+import {Pressable, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
-import {View, StyleSheet, ImageBackground} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import {StyleSheet, ImageBackground} from 'react-native';
 
 import CustomButton from '../common/CustomButton';
 import CustomInput from '../common/CustomInput';
 import ThemeWrapper from '../theme/ThemeWrapper';
-import {storeData} from '../util/asyncStorage';
 import Header from '../common/Header';
 import {useAppState} from '../contextStore/StateProvider';
 import useBackButton from '../util/useBackButton';
+import CountryPicker from '../common/CountryPicker';
 
 function SignIn({navigation}) {
   useBackButton();
   const [{loadingData}, dispatch] = useAppState();
+
+  const [isCountryPicker, setIsCountryPicker] = useState(false);
+  const [countryDetail, setCountryDetail] = useState({
+    callingCode: ['91'],
+    cca2: 'IN',
+    currency: ['INR'],
+    flag: 'flag-in',
+    name: 'India',
+    region: 'Asia',
+    subregion: 'Southern Asia',
+  });
+
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [phoneConfirm, setPhoneConfirm] = useState(null);
-  const {colors} = useTheme();
 
   const loading = () => {
     // dispatch({
@@ -104,7 +115,9 @@ function SignIn({navigation}) {
         console.log('Invalid code.');
       }
     } else {
-      const confirmation = await auth().signInWithPhoneNumber('+91' + phone);
+      const confirmation = await auth().signInWithPhoneNumber(
+        '+' + countryDetail.callingCode + phone
+      );
       setPhoneConfirm(confirmation);
     }
   };
@@ -166,6 +179,18 @@ function SignIn({navigation}) {
   // }
   // };
 
+  const showPicker = (val) => {
+    console.log('calling');
+    setIsCountryPicker(val);
+  };
+
+  const countryPickerHandler = (country) => {
+    setCountryDetail(country);
+    setIsCountryPicker(false);
+  };
+
+  console.log(isCountryPicker, 'country picker');
+
   return (
     <>
       <Header title="Sign In" />
@@ -174,7 +199,7 @@ function SignIn({navigation}) {
         style={[styles.image]}
         resizeMode="stretch"
       >
-        <View style={[styles.card, {backgroundColor: colors.background}]}>
+        <ThemeWrapper styling={styles.card}>
           <CustomButton
             icon="facebook"
             text="Log In with Facebook"
@@ -185,20 +210,33 @@ function SignIn({navigation}) {
             text="Log In with Gmail"
             clicked={handleGoogleSignIn}
           />
-          <CustomInput
-            label={phoneConfirm ? 'Confirm code' : 'Mobile No.'}
-            value={phoneConfirm ? code : phone}
-            onChange={onPhoneChange}
-            inputKey={phoneConfirm ? 'code' : 'phone'}
-            keyboardType="number-pad"
-            maxLength={10}
-          />
+          <View style={styles.mobileContainer}>
+            {!phoneConfirm && (
+              <Pressable onPress={() => showPicker(true)}>
+                <CountryPicker
+                  countryDetail={countryDetail}
+                  visible={isCountryPicker}
+                  pickerHandler={countryPickerHandler}
+                  showPicker={showPicker}
+                />
+              </Pressable>
+            )}
+            <CustomInput
+              label={phoneConfirm ? 'Confirm code' : 'Mobile No.'}
+              value={phoneConfirm ? code : phone}
+              onChange={onPhoneChange}
+              inputKey={phoneConfirm ? 'code' : 'phone'}
+              keyboardType="number-pad"
+              maxLength={10}
+              style={{flex: 1}}
+            />
+          </View>
           <CustomButton
             text={phoneConfirm ? 'Confirm code' : 'Log In with Mobile'}
             clicked={handlePhoneSignIn}
             disabled={phone.length < 10}
           />
-        </View>
+        </ThemeWrapper>
       </ImageBackground>
     </>
   );
@@ -211,11 +249,18 @@ const styles = StyleSheet.create({
     width: '80%',
     paddingVertical: 20,
     borderRadius: 20,
+    flex: 0,
   },
   image: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+  },
+  mobileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
   },
 });

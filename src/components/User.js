@@ -13,7 +13,6 @@ import {useAppState} from '../contextStore/StateProvider';
 import {updateFirestore} from '../util/firestore';
 import useDrawer from '../util/useDrawer';
 import {isEmail, isEmpty, isPhone} from '../util/validation';
-import {useDimensions} from '@react-native-community/hooks';
 
 const initialError = {
   nameError: '',
@@ -25,8 +24,6 @@ const User = ({route}) => {
   // Getting userDetail from store
   const [{uid, userData}] = useAppState();
   const {iconName, handleDrawer} = useDrawer();
-
-  const {height} = useDimensions().window;
 
   // Setting local userDetail for manipulation
   const [userInfo, setUserInfo] = useState({});
@@ -230,12 +227,7 @@ const User = ({route}) => {
         leftIcon={iconName}
         handleLeftIcon={handleDrawer}
       />
-      <View
-        style={[
-          styles.card,
-          {backgroundColor: colors.accent, height: height / 6},
-        ]}
-      >
+      <View style={[styles.card, {backgroundColor: colors.accent}]}>
         <Pressable onPress={onProfileUploading} style={styles.imageContainer}>
           <Avatar.Image
             size={140}
